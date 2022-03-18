@@ -16,9 +16,7 @@ class MainApp(Tk):
         for i in range(count):
             self.entry_list.append(StringVar())
             Label(self, text=input[i].get('name')).grid(row=count + 1 + i, column=0)
-
-            Entry(self, width=20, textvariable=self.entry_list[i]).grid(
-                row=count + 2 + i, column=0, padx=100)
+            Entry(self, width=20, textvariable=self.entry_list[i], show='*' if input[i].get('is_password') else None).grid(row=count + 2 + i, column=0, padx=100)
             count += 1
 
         next_btn = Button(self, width=10, text='Далее', command=self.btn_next)
@@ -39,6 +37,3 @@ class MainApp(Tk):
         self.resizable(False, False)
 
 
-if __name__ == '__main__':
-    MainApp().generate_auth([{'name': 'number', 'is_password': False},
-                                   {'name': 'пароль', 'is_password': True}])
