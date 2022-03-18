@@ -31,7 +31,7 @@ class MainApp(Tk):
             row=1000, column=0, pady=20
         )
 
-        img = ImageTk.PhotoImage(Image.open('img/-GlkRC8TPVo.jpg'))
+        img = ImageTk.PhotoImage(Image.open('img/DDoS-Guard_logo.svg.png'))
         b = Label(self, image=img)
         b.grid()
 
