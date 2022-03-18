@@ -6,6 +6,8 @@ import PIL.Image
 from PIL import *
 from PIL import ImageTk
 
+import auth_method
+
 
 class MainApp(Tk):
     def __init__(self, *args, **kwargs):
@@ -13,20 +15,14 @@ class MainApp(Tk):
 
         self.config_app()
 
-    def generate_auth(self, input: typing.List[dict]):
+    def generate_auth(self, input: typing.List[auth_method.Input]):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
 
-        img = PIL.Image.open('img/ddos-guard.jpg')
-        render = ImageTk.PhotoImage(img)
-        initil = Label(self, image=render)
-        initil.image = render
-        initil.pack()
-
         for i in range(count):
             self.entry_list.append(StringVar())
-            Label(self, text=input[i].get('name')).grid(row=count + 1 + i, column=0)
-            Entry(self, width=20, textvariable=self.entry_list[i], show='*' if input[i].get('is_password') else None).grid(row=count + 2 + i, column=0, padx=100)
+            Label(self, text=input[i].name).grid(row=count + 1 + i, column=0)
+            Entry(self, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None).grid(row=count + 2 + i, column=0, padx=100)
             count += 1
 
         next_btn = Button(self, width=10, text='Далее', command=self.btn_next)
@@ -48,6 +44,6 @@ class MainApp(Tk):
         self.resizable(False, False)
 
 if __name__ == '__main__':
-    list = MainApp().generate_auth([{'name': 'number', 'is_password': False},
-                                   {'name': 'пароль', 'is_password': True}])
+    list = MainApp().generate_auth(auth_method.auth_method[0].inputs)
+    # print()
     print(list)
