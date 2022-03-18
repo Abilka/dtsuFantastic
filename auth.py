@@ -9,29 +9,22 @@ class MainApp(Tk):
         self.config_app()
 
     def generate_auth(self, input: typing.List[dict]) -> typing.List[str]:
-        for par in input:
-            Label(self, text=par['name']).grid(
-                row=2, column=2
-            )
+        self.list = []
+        count = len(input)
 
-            login_entry = Entry(self, width=20)
-            login_entry.grid(
-                row=3, column=2
+        for i in range(count):
+            self.list.append(0)
+            self.list[i] = StringVar()
+            Label(self, text=input[i].get('name')).grid(row=count + 1 + i, column=0)
+            Entry(self, width=20).grid(
+                row=count + 2 + i, column=0, padx=100
             )
+            count += 1
 
-        #
-        # # Label(self, text='Введите пароль').grid(
-        # #     row=5, column=2
-        # # )
-        # password_entry = Entry(self, width=20, show='*')
-        # password_entry.grid(
-        #     row=6, column=2
-        # )
-        #
-        # next_btn = Button(self, text='Далее', width=10, command=self.btn_next)
-        # next_btn.grid(
-        #     row=8, column=2
-        # )
+        next_btn = Button(self, width=10, text='Далее')
+        next_btn.grid(
+            row=1000, column=0, pady=20
+        )
 
         self.mainloop()
 
@@ -45,4 +38,5 @@ class MainApp(Tk):
 
 
 if __name__ == '__main__':
-    MainApp().generate_auth([{'name': 'пароль', 'is_password': True}])
+    MainApp().generate_auth([{'name': 'number', 'is_password': False},
+                             {'name': 'пароль', 'is_password': True}])
