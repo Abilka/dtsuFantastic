@@ -1,3 +1,4 @@
+import tkinter
 import typing
 from tkinter import *
 
@@ -8,18 +9,16 @@ class MainApp(Tk):
 
         self.config_app()
 
-    def generate_auth(self, input: typing.List[dict]) -> typing.List[str]:
-        self.list = []
+    def generate_auth(self, input: typing.List[dict]):
+        self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
 
         for i in range(count):
-            self.list.append(0)
-            self.list[i] = StringVar()
+            self.entry_list.append(StringVar())
             Label(self, text=input[i].get('name')).grid(row=count + 1 + i, column=0)
 
-            self.entry = Entry(self, width=20).grid(
-                row=count + 2 + i, column=0, padx=100
-            )
+            Entry(self, width=20, textvariable=self.entry_list[i]).grid(
+                row=count + 2 + i, column=0, padx=100)
             count += 1
 
         next_btn = Button(self, width=10, text='Далее', command=self.btn_next)
@@ -27,9 +26,11 @@ class MainApp(Tk):
             row=1000, column=0, pady=20
         )
         self.mainloop()
+        return self.btn_next()
 
     def btn_next(self):
-        pass
+        self.quit()
+        return list(map(lambda x: x.get(), self.entry_list))
 
 
     def config_app(self):
@@ -40,4 +41,4 @@ class MainApp(Tk):
 
 if __name__ == '__main__':
     MainApp().generate_auth([{'name': 'number', 'is_password': False},
-                             {'name': 'пароль', 'is_password': True}])
+                                   {'name': 'пароль', 'is_password': True}])
