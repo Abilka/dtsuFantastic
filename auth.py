@@ -1,6 +1,8 @@
 import tkinter
 import typing
 from tkinter import *
+
+import PIL.Image
 from PIL import *
 from PIL import ImageTk
 
@@ -15,7 +17,7 @@ class MainApp(Tk):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
 
-        img = Image.open('img/ddos-guard.jpg')
+        img = PIL.Image.open('img/ddos-guard.jpg')
         render = ImageTk.PhotoImage(img)
         initil = Label(self, image=render)
         initil.image = render
