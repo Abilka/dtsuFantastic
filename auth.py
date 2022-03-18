@@ -16,20 +16,21 @@ class MainApp(Tk):
             self.list.append(0)
             self.list[i] = StringVar()
             Label(self, text=input[i].get('name')).grid(row=count + 1 + i, column=0)
-            Entry(self, width=20).grid(
+
+            self.entry = Entry(self, width=20).grid(
                 row=count + 2 + i, column=0, padx=100
             )
             count += 1
 
-        next_btn = Button(self, width=10, text='Далее')
+        next_btn = Button(self, width=10, text='Далее', command=self.btn_next)
         next_btn.grid(
             row=1000, column=0, pady=20
         )
-
         self.mainloop()
 
     def btn_next(self):
         pass
+
 
     def config_app(self):
         self.title('DdoS case')
