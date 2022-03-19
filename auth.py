@@ -1,6 +1,7 @@
 import tkinter
 import typing
 from tkinter import *
+
 import auth_method
 
 
@@ -46,5 +47,4 @@ class MainApp(Tk):
 
 if __name__ == '__main__':
     list = MainApp().generate_auth(auth_method.auth_method[0].inputs)
-    # print()
     print(list)
