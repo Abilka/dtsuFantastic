@@ -1,7 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
 
-
 class windower(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
