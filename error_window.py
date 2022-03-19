@@ -24,7 +24,7 @@ class MainApp(Tk):
         )
 
     def setting(self):
-        self.geometry('300x200+600+300')
+        self.geometry('300x250+450+200')
         self.title('Ошибка')
         self.config(bg='#fff')
         self.resizable(False, False)
