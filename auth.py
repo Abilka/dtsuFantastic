@@ -5,18 +5,23 @@ from tkinter import *
 import auth_method
 
 
+class User:
+    def __init__(self, id: str or int):
+        self.id = id
+
+
 class MainApp(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.config_app()
 
-    def generate_auth(self, input: typing.List[auth_method.Input]):
+    def generate_auth(self, input: typing.List[auth_method.Input], service: str):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
 
         # Сервис
-        self.service = Label(self, text='Сервис', bg='#fff', font=14, fg='#347aeb')
+        self.service = Label(self, text=service, bg='#fff', font=14, fg='#347aeb')
         self.service.grid(row=1, column=0, pady=(10, 10))
 
         for i in range(count):
@@ -50,6 +55,3 @@ class MainApp(Tk):
         self.resizable(False, False)
 
 
-if __name__ == '__main__':
-    list = MainApp().generate_auth(auth_method.auth_method[0].inputs)
-    print(list)
