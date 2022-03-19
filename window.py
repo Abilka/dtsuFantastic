@@ -6,7 +6,7 @@ class windower(Tk):
         super().__init__(*args, **kwargs)
 
         self.geometry('420x250+550+350')
-        self.config(background='white')
+        self.config(background='whi++te')
         self.title('Ошибка')
         self.iconphoto(True, PhotoImage(file='img/error.png'))
         self.resizable(False, False)

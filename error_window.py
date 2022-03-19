@@ -15,10 +15,10 @@ class MainApp(Toplevel):
         initil.grid(row=0, column=0, padx=110, pady=10)
 
         Label(self, text='Введённые данные не прошли проверку.\nПовторите попытку на новой строке',
-              bg='#fff'). \
+              bg='#fff', fg='#000'). \
             grid(row=1, column=0)
 
-        self.btn = Button(self, text='OK', bg='#fff', command=lambda: self.destroy())
+        self.btn = Button(self, text='OK', bg='#fff', fg='#000', command=lambda: self.destroy())
         self.btn.grid(
             row=2, column=0, pady=20, padx=20
         )
