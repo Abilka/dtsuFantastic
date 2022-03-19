@@ -1,7 +1,7 @@
 import tkinter
 import typing
 from tkinter import *
-
+from tkinter import messagebox
 import auth_method
 
 
@@ -48,6 +48,10 @@ class MainApp(Tk):
     def btn_next(self):
         self.quit()
         return list(map(lambda x: x.get(), self.entry_list))
+
+    @staticmethod
+    def error_window():
+        messagebox.showerror('Ошибка', 'Введённые данные не прошли проверку.\nПовторите попытку на новой строке')
 
     def config_app(self):
         self.title('DDoS case')
