@@ -15,7 +15,7 @@ class Check:
     def pin(self, pincode: str or int) -> bool:
         return True
 
-    def apple_id(self, login: str, password: str):
+    def apple_id(self, login: str, password: str) -> bool:
         cookies = {
             'geo': 'RU',
             'POD': 'ru~ru',
@@ -46,7 +46,6 @@ class Check:
             'X-Requested-With': 'XMLHttpRequest',
             'X-APPLE-HC': '1:11:20220319030232:d85f3dace5071bf25885a80daf6eb94f::819',
             'sec-ch-ua-platform': '"macOS"',
-            'X-Apple-Auth-Attributes': 'd7oD3Vrt9SLyYFNeVflxmjLc8MuxttiYl+7rZqfrFXmuynzjp1SEGY7RbnZDx7yRTSYv6e/1l7YEp5LUMYCVWzlvCzqEK+OCZ2xUX3KGrTC3wPJCKoQRxwUMZ76mnompBxeZOlTOooUNye68dqypLhRg+W2uOiXXpiOhz0jx5FDRG1mZP6up66YFaIQTAuvmnyF7VhtVn34BMnxEAWJ3wboFLyznHvS7EqFwVK9NZ5BK+gZJtSKKS8QACPGY8xXe6w==',
             'sec-ch-ua-mobile': '?0',
             'X-Apple-OAuth-Response-Type': 'code',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36',
@@ -79,7 +78,6 @@ class Check:
             return True
         else:
             return False
-        print(1)
 
 
     def vk(self, number: str or int, password: str) -> bool:
@@ -93,13 +91,6 @@ class Check:
             return True
         except vk_api.AuthError:
             return True
-
-    def telegram(self, number: str) -> bool:
-        import pyrogram
-        user = pyrogram.client.Client("telegram", phone_number=number,
-                                      api_id=2225296, api_hash='52d6315ad5979dd1dc932f1627320d4c')
-        user.run()
-
 
     def totp(self, salt: str, code: str or int) -> bool:
         import pyotp
