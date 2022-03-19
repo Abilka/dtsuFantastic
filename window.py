@@ -11,7 +11,7 @@ class windower(Tk):
         self.iconphoto(True, PhotoImage(file='img/error.png'))
         self.resizable(False, False)
 
-        img = Image.open('img/icon_error22.png')
+        img = Image.open('img/error.png')
         img = img.resize((75, 75), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(img)
         initil = Label(self, image=render, bg='#fff')
@@ -21,6 +21,10 @@ class windower(Tk):
         text = 'Ошибка!\n\nНеправильный логин или пароль.'
         l1 = Label(self, text=text, font=('Arial Bold', 15), bg='white').grid(
             row=0, column=0, pady=(90, 20), padx=(55, 10)
+        )
+
+        btn = Button(self, text='Далее', font=('Arial Bold', 13), pady='8', padx='20', command=self.quit).grid(
+            row=1, column=0, pady=(5, 5), padx=(55, 10)
         )
 
 

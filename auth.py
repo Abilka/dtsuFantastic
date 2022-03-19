@@ -51,7 +51,7 @@ class MainApp(Tk):
 
     @staticmethod
     def error_window():
-        messagebox.showerror('Ошибка', 'Введённые данные не прошли проверку.\nПовторите попытку на новой строке')
+        messagebox.showerror('Ошибка', '')
 
     def config_app(self):
         self.title('DDoS case')
