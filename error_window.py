@@ -6,6 +6,7 @@ class MainApp(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setting()
+        self.bind('<Return>', self.exit_window)
 
         img = Image.open('img/error.png')
         img = img.resize((75, 75), Image.ANTIALIAS)
@@ -22,6 +23,8 @@ class MainApp(Tk):
         self.btn.grid(
             row=2, column=0, pady=20, padx=20
         )
+    def exit_window(self, event):
+        self.destroy()
 
     def setting(self):
         self.geometry('300x250+450+200')

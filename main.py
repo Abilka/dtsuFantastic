@@ -1,3 +1,4 @@
+
 import auth
 import auth_method
 import error_window
@@ -11,11 +12,8 @@ if __name__ == '__main__':
 
         print(result)
         while service.func_check(*result) is not True:
-            error_window.MainApp().mainloop()
+            error_window.MainApp()
 
             root = auth.MainApp()
             result = root.generate_auth(service.inputs, service.name)
             print(result)
-
-
-

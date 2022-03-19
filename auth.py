@@ -12,34 +12,13 @@ class MainApp:
         self.root = Tk()
         self.config_app()
 
-    def error_window(self):
-        self.message = Toplevel()
-        # messagebox.showerror('Ошибка', 'Введённые данные не прошли проверку.\nПовторите попытку на новой строке')
-        self.message.geometry('300x200+600+300')
-        self.message.title('Ошибка')
-        self.message.config(bg='#fff')
-        self.message.resizable(False, False)
-        self.message.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
 
-        img = Image.open('img/error.png')
-        img = img.resize((75, 75), Image.ANTIALIAS)
-        render = ImageTk.PhotoImage(img)
-        initil = Label(self.message, image=render, bg='#fff')
-        initil.image = render
-        initil.grid(row=0, column=0, padx=110, pady=10)
-
-        Label(self.message, text='Введённые данные не прошли проверку.\nПовторите попытку на новой строке',
-              bg='#fff', fg='#000'). \
-            grid(row=1, column=0)
-
-        self.btn = Button(self.message, text='OK', bg='#fff', fg='#000', command=lambda: self.message.destroy())
-        self.btn.grid(
-            row=2, column=0, pady=20, padx=20
-        )
 
     def generate_auth(self, input: typing.List[auth_method.Input], service: str):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
+
+        self.root.bind('<Return>', self.press_enter_auth)
 
         # Сервис
         self.service = Label(self.root, text=service, bg='#fff', font=14, fg='#347aeb')
@@ -60,10 +39,15 @@ class MainApp:
         self.img = PhotoImage(file='img/DDoS-Guard_logo.svg.png', master=self.root)
         bg_logo = Label(self.root, image=self.img, bg='#fff')
         bg_logo.grid(row=0, column=0, pady=10)
-
         self.root.mainloop()
         self.root.destroy()
         return self.btn_next()
+
+    def press_enter_auth(self, event):
+        self.btn_next()
+
+    def press_enter_error(self, event):
+        self.message.quit()
 
     def btn_next(self):
         self.root.quit()
