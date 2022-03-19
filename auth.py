@@ -1,12 +1,6 @@
 import tkinter
 import typing
 from tkinter import *
-from tkinter import ttk
-
-import PIL.Image
-from PIL import *
-from PIL import ImageTk
-
 import auth_method
 
 
@@ -21,24 +15,19 @@ class MainApp(Tk):
         count = len(input)
         for i in range(count):
             self.entry_list.append(StringVar())
-            Label(self, text=input[i].name).grid(row=count + 1 + i, column=0)
+            Label(self, text=input[i].name, bg='#fff').grid(row=count + 1 + i, column=0)
             Entry(self, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None).grid(
                 row=count + 2 + i, column=0, padx=100)
             count += 1
 
-        next_btn = Button(self, width=10, text='Далее', command=self.btn_next)
+        next_btn = Button(self, width=10, text='Далее', command=self.btn_next, bg='#fff')
         next_btn.grid(
             row=1000, column=0, pady=20
         )
 
-        img = ImageTk.PhotoImage(Image.open('img/DDoS-Guard_logo.svg.png'))
-        b = Label(self, image=img)
-        b.grid()
-
-        # img = PhotoImage(file='img/-GlkRC8TPVo.jpg')
-        # self.bg = ttk.Label(self)
-        # self.bg['image'] = img
-        # self.bg.grid()
+        self.img = PhotoImage(file='img/DDoS-Guard_logo.svg.png')
+        bg_logo = Label(self, image=self.img, bg='#fff')
+        bg_logo.grid(row=0, column=0)
 
         self.mainloop()
         return self.btn_next()
@@ -48,10 +37,11 @@ class MainApp(Tk):
         return list(map(lambda x: x.get(), self.entry_list))
 
     def config_app(self):
-        self.title('DdoS case')
+        self.title('DDoS case')
         self.config(bg='#fff')
-        self.geometry('350x250+250+150')
-        # self.resizable(False, False)
+        self.geometry('350x250+450+200')
+        self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
+        self.resizable(False, False)
 
 
 if __name__ == '__main__':
