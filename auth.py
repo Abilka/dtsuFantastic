@@ -50,6 +50,6 @@ class MainApp(Tk):
     def config_app(self):
         self.title('DDoS case')
         self.config(bg='#fff')
-        self.geometry('350x350+450+200')
+        self.geometry('330x350+450+200')
         self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
         self.resizable(False, False)
