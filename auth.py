@@ -21,12 +21,12 @@ class MainApp(Tk):
 
         for i in range(count):
             self.entry_list.append(StringVar())
-            Label(self, text=input[i].name, bg='#fff').grid(row=count + 1 + i, column=0, pady=3)
+            Label(self, text=input[i].name, bg='#fff', fg='#000').grid(row=count + 1 + i, column=0, pady=3)
             Entry(self, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None).grid(
                 row=count + 2 + i, column=0, padx=100)
             count += 1
 
-        next_btn = Button(self, width=10, text='Далее', command=self.btn_next, bg='#fff')
+        next_btn = Button(self, width=10, text='Далее', command=self.btn_next, bg='#fff', fg='#000')
         next_btn.grid(
             row=1000, column=0, pady=20
         )
