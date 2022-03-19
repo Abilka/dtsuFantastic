@@ -1,7 +1,6 @@
 import tkinter
 import typing
 from tkinter import *
-from tkinter import messagebox
 import auth_method
 
 
@@ -11,11 +10,6 @@ class MainApp(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config_app()
-
-    def __enter__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.config_app()
-        return self
 
     def generate_auth(self, input: typing.List[auth_method.Input], service: str):
         self.entry_list: typing.List[tkinter.StringVar] = []
@@ -32,7 +26,7 @@ class MainApp(Tk):
                   bg='#fff', fg='#000').grid(row=count + 2 + i, column=0, padx=100)
             count += 1
 
-        next_btn = Button(self, width=10, text='Далее', command=self.btn_next, bg='#fff', fg='#000')
+        next_btn = Button(self, width=10, text='Далее', command=self.quit, bg='#fff', fg='#000')
         next_btn.grid(
             row=1000, column=0, pady=20
         )
@@ -49,13 +43,9 @@ class MainApp(Tk):
         self.quit()
         return list(map(lambda x: x.get(), self.entry_list))
 
-    @staticmethod
-    def error_window():
-        messagebox.showerror('Ошибка', '')
-
     def config_app(self):
         self.title('DDoS case')
         self.config(bg='#fff')
         self.geometry('330x350+450+200')
-        self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
+        self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png', master=self))
         self.resizable(False, False)

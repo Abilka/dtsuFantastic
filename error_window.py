@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 
-class MainApp(Toplevel):
+class MainApp(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setting()
@@ -24,12 +24,8 @@ class MainApp(Toplevel):
         )
 
     def setting(self):
-        self.geometry('300x200')
+        self.geometry('300x200+600+300')
         self.title('Ошибка')
         self.config(bg='#fff')
         self.resizable(False, False)
         self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
-
-
-if __name__ == '__main__':
-    MainApp().mainloop()
