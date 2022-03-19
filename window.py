@@ -23,6 +23,10 @@ class windower(Tk):
             row=0, column=0, pady=(90, 20), padx=(55, 10)
         )
 
+        btn = Button(self, text='Далее', font=('Arial Bold', 13), pady='8', padx='20', command=self.quit).grid(
+            row=1, column=0, pady=(5, 5), padx=(55, 10)
+        )
+
 
 if __name__ == '__main__':
     windower().mainloop()
