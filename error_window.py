@@ -23,6 +23,8 @@ class MainApp(Tk):
         self.btn.grid(
             row=2, column=0, pady=20, padx=20
         )
+        self.mainloop()
+
     def exit_window(self, event):
         self.destroy()
 

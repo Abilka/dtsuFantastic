@@ -46,9 +46,6 @@ class MainApp:
     def press_enter_auth(self, event):
         self.btn_next()
 
-    def press_enter_error(self, event):
-        self.message.quit()
-
     def btn_next(self):
         self.root.quit()
         return list(map(lambda x: x.get(), self.entry_list))
