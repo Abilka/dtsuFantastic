@@ -14,8 +14,13 @@ class AuthMethod:
 
 
 auth_method = [
-    AuthMethod('VK', [Input('Логин'), Input("Пароль", True)]),
-    AuthMethod('GitHub', [Input('Логин'), Input('Пароль', True)]),
-    AuthMethod('Google', [Input('Логин'), Input('Пароль', True)]),
-    AuthMethod('Telegram', [Input('Номер')]),
+    AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)]),
+    AuthMethod('Pincode', [Input('Код')]),
+    AuthMethod('Google Auth', [Input('Код из приложения')]),
+    AuthMethod('ВКонтакте', [Input('Логин'), Input("Пароль", True)]),
+    AuthMethod('Apple ID', [Input('Логин'), Input("Пароль", True)]),
+
+    # AuthMethod('GitHub', [Input('Логин'), Input('Пароль', True)]),
+    # AuthMethod('Google', [Input('Логин'), Input('Пароль', True)]),
+    # AuthMethod('Telegram', [Input('Номер')]),
 ]

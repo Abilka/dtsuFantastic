@@ -15,6 +15,54 @@ class Check:
     def pin(self, pincode: str or int) -> bool:
         return True
 
+    def wikipedia(self, login: str, password: str) -> bool:
+        import requests
+
+        headers = {
+            'authority': 'ru.wikipedia.org',
+            'cache-control': 'max-age=0',
+            'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"macOS"',
+            'upgrade-insecure-requests': '1',
+            'origin': 'https://ru.wikipedia.org',
+            'content-type': 'application/x-www-form-urlencoded',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-user': '?1',
+            'sec-fetch-dest': 'document',
+            'referer': 'https://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%92%D1%85%D0%BE%D0%B4&returnto=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F+%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0',
+            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+            'cookie': 'WMF-Last-Access=19-Mar-2022; WMF-Last-Access-Global=19-Mar-2022; GeoIP=RU:ROS:Rostov-on-Don:47.24:39.72:v4; ruwikimwuser-sessionId=e22c6dcb76f8762e4a48; ruwikiss0-UserName=VaineBa; ruwikiUserName=VaineBa; loginnotify_prevlogins=2022-1mveq1c-gbi8e751fpm70af0lkeqvrk25oxuobm; ruwikigrowth.welcomesurvey.token=onneh34lt47doqkbj6cl9h6ude74taii; ruwiki-mw-tour=%7B%22version%22%3A1%2C%22tours%22%3A%7B%7D%7D; ruwikiel-sessionId=b29342f64628346a9556; ruwikiwmE-sessionTickLastTickTime=1647668934390; ruwikiwmE-sessionTickTickCount=12; ruwikigrowth.welcomesurvey.phase=logged_out; ss0-ruwikiSession=88l2efalfekme5c0pt8te63pekmdbu6f; ruwikiSession=88l2efalfekme5c0pt8te63pekmdbu6f',
+        }
+
+        params = (
+            ('title', '\u0421\u043B\u0443\u0436\u0435\u0431\u043D\u0430\u044F:\u0412\u0445\u043E\u0434'),
+            ('returnto',
+             '\u0417\u0430\u0433\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430'),
+        )
+
+        data = {
+            'wpName': login,
+            'wpPassword': password,
+            'wploginattempt': '\u0412\u043E\u0439\u0442\u0438',
+            'wpEditToken': '+\\',
+            'title': '\u0421\u043B\u0443\u0436\u0435\u0431\u043D\u0430\u044F:\u0412\u0445\u043E\u0434',
+            'authAction': 'login',
+            'force': '',
+            'wpLoginToken': '6a44d9a4bdab9edde814777e44e3b1a962356ef5+\\',
+            'geEnabled': '-1',
+            'geNewLandingHtml': '-1'
+        }
+
+        response = requests.post('https://ru.wikipedia.org/w/index.php', headers=headers, params=params, data=data)
+
+        if "Введены неверные имя участника или пароль." in response.text:
+            return False
+        return True
+
     def apple_id(self, login: str, password: str) -> bool:
         cookies = {
             'geo': 'RU',
@@ -79,7 +127,6 @@ class Check:
         else:
             return False
 
-
     def vk(self, number: str or int, password: str) -> bool:
         import vk_api
         vk = vk_api.VkApi(login=number, password=password)
@@ -99,8 +146,7 @@ class Check:
         totp = pyotp.TOTP(salt)
         if code == str(totp.now()):
             return True
-        else:
-            return False
+        return False
 
 
 class DB:
@@ -108,5 +154,14 @@ class DB:
         self.con = sqlite3.connect("base.db")
         self.cur = self.con.cursor()
 
-    def get_login_paasord(self, login: str, password: str) -> bool:
-        self.cur.execute('SELECT id WHERE login=? AND password=?')
+    def get_login_password(self, login: str, password: str) -> bool:
+        result = self.cur.execute('SELECT id FROM user WHERE login=? AND password=?', (login, password)).fetchone()
+        if result is not None:
+            return True
+        return False
+
+    def get_pincode(self, id: str or int, pincode: str or int) -> bool:
+        result = self.cur.execute('SELECT pincode FROM user WHERE id=?', (id)).fetchone()
+        if result is not None and result[0] == pincode:
+            return True
+        return False
