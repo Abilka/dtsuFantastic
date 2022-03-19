@@ -1,5 +1,7 @@
 import typing
 
+import methods
+
 
 class Input:
     def __init__(self, name: str, is_password: bool = False):
@@ -8,17 +10,21 @@ class Input:
 
 
 class AuthMethod:
-    def __init__(self, name: str, input_list: typing.List[Input]):
+    def __init__(self, name: str, input_list: typing.List[Input], func_check):
         self.name = name
         self.inputs = input_list
+        self.func_check = func_check
+
+    def is_valid(self) -> bool:
+        return self.func_check()
 
 
 auth_method = [
-    AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)]),
-    AuthMethod('Pincode', [Input('Код')]),
-    AuthMethod('Google Auth', [Input('Код из приложения')]),
-    AuthMethod('ВКонтакте', [Input('Логин'), Input("Пароль", True)]),
-    AuthMethod('Apple ID', [Input('Логин'), Input("Пароль", True)]),
+    AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)], methods.DB().get_login_password),
+    AuthMethod('Pincode', [Input('Код')], methods.Check().pin),
+    AuthMethod('Google Auth', [Input('Код из приложения')], methods.Check().totp),
+    AuthMethod('ВКонтакте', [Input('Логин'), Input("Пароль", True)], methods.Check().vk),
+    AuthMethod('Apple ID', [Input('Логин'), Input("Пароль", True)], methods.Check().apple_id),
 
     # AuthMethod('GitHub', [Input('Логин'), Input('Пароль', True)]),
     # AuthMethod('Google', [Input('Логин'), Input('Пароль', True)]),

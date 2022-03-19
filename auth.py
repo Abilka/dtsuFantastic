@@ -5,15 +5,17 @@ from tkinter import *
 import auth_method
 
 
-class User:
-    def __init__(self, id: str or int):
-        self.id = id
 
 
 class MainApp(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config_app()
+
+    def __enter__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.config_app()
+        return self
 
     def generate_auth(self, input: typing.List[auth_method.Input], service: str):
         self.entry_list: typing.List[tkinter.StringVar] = []
