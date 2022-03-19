@@ -13,7 +13,6 @@ class User:
 class MainApp(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self.config_app()
 
     def generate_auth(self, input: typing.List[auth_method.Input], service: str):
@@ -41,6 +40,7 @@ class MainApp(Tk):
         bg_logo.grid(row=0, column=0, pady=10)
 
         self.mainloop()
+        self.destroy()
         return self.btn_next()
 
     def btn_next(self):
@@ -51,7 +51,5 @@ class MainApp(Tk):
         self.title('DDoS case')
         self.config(bg='#fff')
         self.geometry('350x350+450+200')
-        self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png', master=self))
+        self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
         self.resizable(False, False)
-
-
