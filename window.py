@@ -11,7 +11,7 @@ class windower(Tk):
         self.iconphoto(True, PhotoImage(file='img/error.png'))
         self.resizable(False, False)
 
-        img = Image.open('img/icon_error22.png')
+        img = Image.open('img/error.png')
         img = img.resize((75, 75), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(img)
         initil = Label(self, image=render, bg='#fff')
