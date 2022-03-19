@@ -14,9 +14,14 @@ class MainApp(Tk):
     def generate_auth(self, input: typing.List[auth_method.Input]):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
+
+        # Сервис
+        self.service = Label(self, text='Сервис', bg='#fff', font=14, fg='#347aeb')
+        self.service.grid(row=1, column=0, pady=(10, 10))
+
         for i in range(count):
             self.entry_list.append(StringVar())
-            Label(self, text=input[i].name, bg='#fff').grid(row=count + 1 + i, column=0)
+            Label(self, text=input[i].name, bg='#fff').grid(row=count + 1 + i, column=0, pady=3)
             Entry(self, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None).grid(
                 row=count + 2 + i, column=0, padx=100)
             count += 1
@@ -28,7 +33,7 @@ class MainApp(Tk):
 
         self.img = PhotoImage(file='img/DDoS-Guard_logo.svg.png')
         bg_logo = Label(self, image=self.img, bg='#fff')
-        bg_logo.grid(row=0, column=0)
+        bg_logo.grid(row=0, column=0, pady=10)
 
         self.mainloop()
         return self.btn_next()
@@ -40,7 +45,7 @@ class MainApp(Tk):
     def config_app(self):
         self.title('DDoS case')
         self.config(bg='#fff')
-        self.geometry('350x250+450+200')
+        self.geometry('350x350+450+200')
         self.iconphoto(False, PhotoImage(file='img/DDoS-Guard_logo.svg.png'))
         self.resizable(False, False)
 
