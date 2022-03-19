@@ -20,7 +20,7 @@ class AuthMethod:
 
 
 auth_method = [
-    AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)], methods.DB().get_login_password),
+    AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)], methods.Check().standart),
     AuthMethod('Pincode', [Input('Код')], methods.Check().pin),
     AuthMethod('Google Auth', [Input('Код из приложения')], methods.Check().totp),
     AuthMethod('ВКонтакте', [Input('Логин'), Input("Пароль", True)], methods.Check().vk),

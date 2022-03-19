@@ -4,6 +4,8 @@ import requests
 class User:
     def __init__(self, id: str or int=None):
         self.id = id
+        self.salt = None
+        self.number = None
 
 user: User = User()
 
@@ -13,58 +15,17 @@ class Check:
         ...
 
     def standart(self, login: str, password: str) -> bool:
-        return True
+        return DB().get_login_password(login, password)
+
 
     def google(self, login: str, password: str) -> bool:
-
         return True
 
     def pin(self, pincode: str or int) -> bool:
-        return True
+        return DB().get_pincode(str(pincode))
 
-    def wikipedia(self, login: str, password: str) -> bool:
-        import requests
-        headers = {
-            'authority': 'ru.wikipedia.org',
-            'cache-control': 'max-age=0',
-            'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"macOS"',
-            'upgrade-insecure-requests': '1',
-            'origin': 'https://ru.wikipedia.org',
-            'content-type': 'application/x-www-form-urlencoded',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36',
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-user': '?1',
-            'sec-fetch-dest': 'document',
-            'referer': 'https://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0%92%D1%85%D0%BE%D0%B4&returnto=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F+%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0',
-            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            'cookie': 'WMF-Last-Access=19-Mar-2022; WMF-Last-Access-Global=19-Mar-2022; GeoIP=RU:ROS:Rostov-on-Don:47.24:39.72:v4; ruwikimwuser-sessionId=e22c6dcb76f8762e4a48; ruwikiss0-UserName=VaineBa; ruwikiUserName=VaineBa; ruwiki-mw-tour=%7B%22version%22%3A1%2C%22tours%22%3A%7B%7D%7D; ruwikigrowth.welcomesurvey.phase=logged_out; loginnotify_prevlogins=2022-gnrmc1-qhe8cl8hbm1j5isu4jl1vygw67reije; ruwikiwmE-sessionTickLastTickTime=1647687943741; ruwikiwmE-sessionTickTickCount=23; ruwikiel-sessionId=d34dcb7a1001e0d0c4d6; ss0-ruwikiSession=tjl02em4efq632hdvhja74iuhgoj4btc; ruwikiSession=tjl02em4efq632hdvhja74iuhgoj4btc; cpPosIndex=2%401647687952%23a52495f3fe4fa98d5f20fab1c3649b90; UseDC=master; UseCDNCache=false',
-        }
-
-        params = (
-            ('title', '\u0421\u043B\u0443\u0436\u0435\u0431\u043D\u0430\u044F:\u0412\u0445\u043E\u0434'),
-            ('returnto',
-             '\u0417\u0430\u0433\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430'),
-        )
-
-        data = {
-            'wpName': login,
-            'wpPassword': password,
-            'wploginattempt': '\u0412\u043E\u0439\u0442\u0438',
-            'wpEditToken': '+\\',
-            'title': '\u0421\u043B\u0443\u0436\u0435\u0431\u043D\u0430\u044F:\u0412\u0445\u043E\u0434',
-            'authAction': 'login',
-            'force': '',
-            'wpLoginToken': '5128bf1a77d4482582183d02fb9ee7c56235b910+\\',
-            'geEnabled': '-1',
-            'geNewLandingHtml': '-1'
-        }
-
-        response = requests.post('https://ru.wikipedia.org/w/index.php', headers=headers, params=params, data=data)
-
+    def wikipedia(self):
+        pass
 
     def apple_id(self, login: str, password: str) -> bool:
         cookies = {
@@ -142,11 +103,11 @@ class Check:
         except vk_api.AuthError:
             return True
 
-    def totp(self, salt: str, code: str or int) -> bool:
+    def totp(self, code: str or int) -> bool:
         import pyotp
 
         code = str(code)
-        totp = pyotp.TOTP(salt)
+        totp = pyotp.TOTP(user.salt)
         if code == str(totp.now()):
             return True
         return False
@@ -158,14 +119,16 @@ class DB:
         self.cur = self.con.cursor()
 
     def get_login_password(self, login: str, password: str) -> bool:
-        result = self.cur.execute('SELECT id FROM user WHERE login=? AND password=?', (login, password)).fetchone()
+        result = self.cur.execute('SELECT id, totp_salt, number FROM user WHERE login=? AND password=?', (login, password)).fetchone()
         if result is not None:
             user.id = result[0]
+            user.salt = result[1]
+            user.number = result[2]
             return True
         return False
 
     def get_pincode(self, pincode: str or int) -> bool:
         result = self.cur.execute('SELECT pincode FROM user WHERE id=?', (user.id,)).fetchone()
-        if result is not None and result[0] == pincode:
+        if result is not None and str(result[0]) == pincode:
             return True
         return False
