@@ -152,9 +152,6 @@ class Check:
         return False
 
     def gosuslugi(self, login: str, password: str) -> bool:
-        login = "+"+login if '+' not in login else login
-
-
         session = requests.session()
 
         cookies = {
