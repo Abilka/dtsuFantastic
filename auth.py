@@ -26,19 +26,23 @@ class MainApp:
             self.entry_list.append(StringVar())
             Label(self.root, text=input[i].name, bg='#fff', fg='#000').grid(row=count + 1 + i, column=0, pady=3)
             entr = Entry(self.root, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None,
-                  bg='#fff', fg='#000', takefocus=True)
+                         bg='#fff', fg='#000', takefocus=True)
+            entr['border'] = '0'
             entr.grid(row=count + 2 + i, column=0, padx=100)
             entr.focus()
             count += 1
 
         next_btn = Button(self.root, width=10, text='Далее', command=self.root.quit, bg='#fff', fg='#000')
+        next_btn['border'] = '0'
         next_btn.grid(
             row=1000, column=0, pady=20
         )
 
         if is_skip:
-            Button(self.root, width=10, text='Пропустить', command=self.btn_next, bg='#fff', fg='#000').grid(
-                row=10, column=0, pady=5
+            btn = Button(self.root, width=10, text='Пропустить', command=self.btn_next, bg='#fff', fg='#000')
+            btn['border'] = '0'
+            btn.grid(
+                row=10, column=0, pady=10
             )
 
         self.img = PhotoImage(file='img/DDoS-Guard_logo.svg.png', master=self.root)
@@ -47,7 +51,6 @@ class MainApp:
         self.root.mainloop()
         self.root.destroy()
         return self.btn_next()
-
 
     def press_enter_auth(self, event):
         self.btn_next()

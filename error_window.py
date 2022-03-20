@@ -20,6 +20,7 @@ class MainApp(Tk):
             grid(row=1, column=0)
 
         self.btn = Button(self, text='OK', bg='#fff', fg='#000', command=lambda: self.destroy(), width=10)
+        self.btn['border']='0'
         self.btn.grid(
             row=2, column=0, pady=20, padx=20
         )
