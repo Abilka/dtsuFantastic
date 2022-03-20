@@ -30,6 +30,7 @@ auth_method = [
     AuthMethod('GosUslugi', [Input('Логин'), Input("Пароль", True)], methods.Check().gosuslugi),
     AuthMethod('Sber', [Input('Логин'), Input("Пароль", True)], methods.Check().sber, True),
     # AuthMethod('Steam', [Input('Логин'), Input("Пароль", True)], methods.Check().steam, True),
+    # AuthMethod('Steam', [Input('Логин'), Input("Пароль", True)], methods.Check().steam, True),
 
     # AuthMethod('Google', [Input('Логин'), Input('Пароль', True)]),
     # AuthMethod('Telegram', [Input('Номер')]),

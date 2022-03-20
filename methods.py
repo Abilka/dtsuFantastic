@@ -152,6 +152,48 @@ class Check:
         return False
 
     def gosuslugi(self, login: str, password: str) -> bool:
+        session = requests.session()
+
+        cookies = {
+            'userSelectedLanguage': 'ru',
+            'nau': 'b82cae4b-a0ad-4103-d449-a975be7c0e50',
+            '_ym_uid': '1647726238722849766',
+            '_ym_d': '1647726238',
+            'userSelectedRegion': '60401000000',
+            '_ym_isad': '2',
+            'defaultLocale': 'ru',
+            '_idp_authn_id': 'phone%3A%252B7(918)5272354',
+            'usi_portal': 'rBApZmI21NZTbYJpJDIeAg==',
+            'fhp': 'rBBoGWI21Nguim/za2lpAg==',
+            'ctx_id': 'ffffffffaf18760845525d5f4f58455e445a4a423660',
+            'JSESSIONID': '1FC4295D4C6DA8AD188CFD5B3EDDE851',
+            'ESIA_SESSION': '158aa091-0975-41d0-8c41-d802f2a6231c',
+            '__gsac_gib-w-gosuslugi': 'bcfc59ff-b9bc-b792-5eca-969586f56b36',
+            '__zzatgib-w-gosuslugi': 'MDA0dC0cTApcfEJcdGswPi17CT4VHThHKHIzd2VrTXdcdm5yIURzDEZeVhBJJCUTRxwaSk5fbxt7Il8qCCRjNV8ZQ2pODWk3XBQ8dWU+R3F6MEFlI19IWyNEUT9IXl1JEjJiEkBATUcNN0BeN1dhMA8WEU1HFT1WUk9DKGsbcVhXL3AkF0hSfjsWa25HZ0dXTBdfQjs4WEERdVw+RnJ6LzxnJV85VRELEhdEXlxVaXVnGUxAVy8NLjheLW8eZUtgJkZVVH4tHhZ9ZxUeQE8bUAg0NmJwVycrESZUP0cZSmVOewldYxM4RCEJdj0/GxA6OERlMg==',
+            'cfidsgib-w-gosuslugi': 'xDfk9ohr8YvdP2jxjvd04N/z2tB7tAeaBjmhdTSkz2/X6NMyCdacTQ95fPhRQnOQj75hK0eWBFOhkOlMz6Ybr0nfMpDwDUZ9XH/ROxRgbq4X7AWlG/2c11m/ZBef9V2ZvRxqBrKgCnf+ImDQ4wgGof8nv3kHTjfH3//fCYw=',
+            'gsscgib-w-gosuslugi': '7FDfV+YrHs+15iYUPknbv2/Me3tLpDyZxHYfhcFffHe1UQlWuDx4E27ClEoGDNS2A80Sqpg3mhPANQ98Z5nFpYsk6zn+IdJbn7/VVt6O6cRvKB0i2xKynYjlkh2inbyJMR/+MRGDxCiDXkrXpG4OO3HBzpuVOBvZ5urNoZ5rOR8eg6+EAjl92gaeNsdyzlqti6asNFrr9lNCkCyELVI/neoDcuc25EJzSQfWT3HyoETMN3AwDTC/gDJ/nTvRgw==',
+            'fgsscgib-w-gosuslugi': '2lxK24de79011138b16f00e4b65d30329d2033e7',
+        }
+
+        headers = {
+            'Connection': 'keep-alive',
+            'Cache-Control': 'max-age=0',
+            'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"macOS"',
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Sec-Fetch-Site': 'none',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-User': '?1',
+            'Sec-Fetch-Dest': 'document',
+            'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+        }
+
+        session.get('https://esia.gosuslugi.ru/login/', headers=headers, cookies=cookies)
+
+
         login = "+"+login if '+' not in login else login
         cookies = {
             'userSelectedLanguage': 'ru',
@@ -173,7 +215,6 @@ class Check:
             'gsscgib-w-gosuslugi': 'akiQesnuOQrAC1vJwEPO7iEZ5MYlgiamntY+HREocNr87VeJNp3+AZSKLH0FHApk878kCpHOGOv0zOsh8PD6un9654eejYFMYpF6h3hsD71q0Mw3yfnn8KONFBvEszsnj0wh+IeAGhe9BPCoefxMPxA0Nb+fkEEdy6eFW+el5G8LKIP02crGnHv7YVEHuWzHTSA/GG3XGxI1EECTylFl77JuVsjs89VjyIlt0JBQv+rQHHSBxkp2Q01k3kF0QpSg9ctAUYtfbQ==',
             'fgsscgib-w-gosuslugi': '1FaWc2cef9b9971d26a56b1c850e01503f1ac6bf',
         }
-
         headers = {
             'Connection': 'keep-alive',
             'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
@@ -191,17 +232,15 @@ class Check:
             'Referer': 'https://esia.gosuslugi.ru/login/',
             'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
         }
-
         json_data = {
             'login': login,
             'idType': 'phone',
             'password': password,
         }
-
-        response = requests.post('https://esia.gosuslugi.ru/aas/oauth2/api/login', headers=headers, cookies=cookies,
+        response = session.post('https://esia.gosuslugi.ru/aas/oauth2/api/login', headers=headers, cookies=cookies,
                                  json=json_data)
 
-        if response.json() and str(response.json().get('error')) != 'wrong_password':
+        if str(response.json().get('error')) != 'wrong_password':
             return True
         return False
 
