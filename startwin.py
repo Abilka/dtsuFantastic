@@ -15,16 +15,13 @@ class App(Tk):
         img = Image.open('img/bg.jpg')
         idraw = ImageDraw.Draw(img)
         text = 'Добро пожаловать в систему!\n\nПройдите авторизацию для продолжения использования системы'
-        font = ImageFont.truetype('arial.ttf', size=16)
+        font = ImageFont.truetype('fonts/arial.ttf', size=16)
         idraw.text((160, 160), text, font=font, fg='#fff')
         render = ImageTk.PhotoImage(img)
         initil = Label(self, image=render)
         initil.image = render
         initil.grid()
 
-        Button(self, text='Далее', width=10, height=1, font=("Arial Bold", 10), bg='white', fg='#000').grid(
+        Button(self, text='Далее', width=10, height=1, font=("Arial Bold", 10), bg='white', fg='#000', command=self.destroy).grid(
             row=0, column=0, pady=(160, 0), padx=(0, 650)
         )
-
-if __name__ == '__main__':
-    App().mainloop()

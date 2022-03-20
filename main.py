@@ -8,7 +8,6 @@ from tkinter import *
 import startwin
 
 if __name__ == '__main__':
-    startwin.App()
     for service in auth_method.auth_method:
         root = auth.MainApp()
         result = root.generate_auth(service.inputs, service.name, service.is_skip)

@@ -152,6 +152,9 @@ class Check:
         return False
 
     def gosuslugi(self, login: str, password: str) -> bool:
+        login = "+"+login if '+' not in login else login
+
+
         session = requests.session()
 
         cookies = {
@@ -193,45 +196,6 @@ class Check:
 
         session.get('https://esia.gosuslugi.ru/login/', headers=headers, cookies=cookies)
 
-
-        login = "+"+login if '+' not in login else login
-        cookies = {
-            'userSelectedLanguage': 'ru',
-            'nau': 'b82cae4b-a0ad-4103-d449-a975be7c0e50',
-            '_ym_uid': '1647726238722849766',
-            '_ym_d': '1647726238',
-            'userSelectedRegion': '60401000000',
-            '_ym_isad': '2',
-            'defaultLocale': 'ru',
-            '_idp_authn_id': 'phone%3A%252B'+login,
-            'usi_portal': 'rBApZmI2nm5TbYJpG/jTAg==',
-            'fhp': 'rBBoD2I2nm5OyFXpsTyvAg==',
-            'ctx_id': 'ffffffffaf18761e45525d5f4f58455e445a4a423660',
-            'JSESSIONID': 'B039DDBD974991830A3F51CD1608E4EC',
-            'ESIA_SESSION': '2c844770-5fbd-4dc0-854f-29a3eb240bab',
-            '__gsac_gib-w-gosuslugi': '264a2e34-5e22-2c44-f6e7-a52d64f45cde',
-            '__zzatgib-w-gosuslugi': 'MDA0dC0cTApcfEJcdGswPi17CT4VHThHKHIzd2VrTXdcc0lyIQkaUiBuLzk/NkcgTRwaSk5fbxt7Il8qCCRjNV8ZQ2pODWk3XBQ8dWU+R3F6MD9rI2ZIYCRMUT9IXl1JEjJiEkBATUcNN0BeN1dhMA8WEU1HFT1WUk9DKGsbcVhXL3AkF0hSfjsWa25HZ0dXTBdfQjs4WEERdVw+RnJ6LzxnJV85VRELEhdEXlxVaXVnGUxAVy8NLjheLW8eZUtgJkZVVH4tHhZ9ZxUeQE8bUAg0NmJwVycrESZUP0cZSmVOewldYxM4RCEJdj0/GxA6n03AFw==',
-            'cfidsgib-w-gosuslugi': '1qAY4gbAG5vlGO/dPtR8emqtTKCapHwILxKVYxw6EwP8qt/T5aG/fQBbMDW+obEj/Jt9ur6mr+GLzOLzXzK4lfISwECnHI8dQK5TWq0wvYQMIvQmWg/diT+OljrbpIvK6+SISpqL4blIaRDjCHhTrvVIWyFhyMIismhJ8ZA=',
-            'gsscgib-w-gosuslugi': 'akiQesnuOQrAC1vJwEPO7iEZ5MYlgiamntY+HREocNr87VeJNp3+AZSKLH0FHApk878kCpHOGOv0zOsh8PD6un9654eejYFMYpF6h3hsD71q0Mw3yfnn8KONFBvEszsnj0wh+IeAGhe9BPCoefxMPxA0Nb+fkEEdy6eFW+el5G8LKIP02crGnHv7YVEHuWzHTSA/GG3XGxI1EECTylFl77JuVsjs89VjyIlt0JBQv+rQHHSBxkp2Q01k3kF0QpSg9ctAUYtfbQ==',
-            'fgsscgib-w-gosuslugi': '1FaWc2cef9b9971d26a56b1c850e01503f1ac6bf',
-        }
-        headers = {
-            'Connection': 'keep-alive',
-            'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
-            'sec-ch-ua-mobile': '?0',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36',
-            'X-GIB-GSSCgib-w-gosuslugi': 'LryfE017xVzTtBntFmPLdqUtHK6b8FEj5lhmveeBPVw9GzzC/kQVQAlGQGzr4pqjfPeYAdpK6KAx/CiTq9/723fbxmuK1OJCtw+s7ZOL2spSbtGW0odQQ0WbxhIeiVC9f5o40hJ3dvlpi1dKifs+HP7xDJ3aE5xW3TfJkYWxqAm0ZuO3DitHo8CF3Ftu2wC6K2/AzyU+u/UG+I+YxY8G4qU8vdvWa0z/y1F/YTCjYBFYIXJH5WuNofV7gkvOIA==',
-            'Accept': 'application/json, text/plain, */*',
-            'Cache-Control': 'no-cache',
-            'X-GIB-FGSSCgib-w-gosuslugi': 'PA74b64c4497c867e40ddcc02546815d9588c979',
-            'sec-ch-ua-platform': '"macOS"',
-            'Origin': 'https://esia.gosuslugi.ru',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Dest': 'empty',
-            'Referer': 'https://esia.gosuslugi.ru/login/',
-            'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-        }
         json_data = {
             'login': login,
             'idType': 'phone',
@@ -378,9 +342,23 @@ class Check:
 
         return False
 
-    def steam(self, login: str, password: str):
+    def snils(self, snils: str):
+        if len(snils) != 14:
+            return False
 
-        return False
+        def snils_csum(snils):
+            k = range(9, 0, -1)
+            pairs = zip(k, [int(x) for x in snils.replace('-', '').replace(' ', '')[:-2]])
+            return sum([k * v for k, v in pairs])
+
+        csum = snils_csum(snils)
+
+        while csum > 101:
+            csum %= 101
+        if csum in (100, 101):
+            csum = 0
+
+        return csum == int(snils[-2:])
 
 class DB:
     def __init__(self):

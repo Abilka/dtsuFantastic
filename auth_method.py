@@ -21,14 +21,16 @@ class AuthMethod:
 
 
 auth_method = [
+    AuthMethod('СНИЛС', [Input('СНИЛС')], methods.Check().snils, True),
+    AuthMethod('GosUslugi', [Input('Логин'), Input("Пароль", True)], methods.Check().gosuslugi),
     AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)], methods.Check().standart),
     AuthMethod('Pincode', [Input('Код')], methods.Check().pin),
     AuthMethod('Google Auth', [Input('Код из приложения')], methods.Check().totp),
     AuthMethod('ВКонтакте', [Input('Логин'), Input("Пароль", True)], methods.Check().vk),
     AuthMethod('Apple ID', [Input('Логин'), Input("Пароль", True)], methods.Check().apple_id),
     AuthMethod('GitHub', [Input('Логин'), Input("Пароль", True)], methods.Check().github),
-    AuthMethod('GosUslugi', [Input('Логин'), Input("Пароль", True)], methods.Check().gosuslugi),
     AuthMethod('Sber', [Input('Логин'), Input("Пароль", True)], methods.Check().sber, True),
+
     # AuthMethod('Steam', [Input('Логин'), Input("Пароль", True)], methods.Check().steam, True),
     # AuthMethod('Steam', [Input('Логин'), Input("Пароль", True)], methods.Check().steam, True),
 
