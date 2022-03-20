@@ -16,7 +16,7 @@ class App(Tk):
         idraw = ImageDraw.Draw(img)
         text = 'Добро пожаловать в систему!\n\nПройдите авторизацию для продолжения использования системы'
         font = ImageFont.truetype('arial.ttf', size=16)
-        idraw.text((160, 160), text, font=font, fg='#000')
+        idraw.text((160, 160), text, font=font, fg='#fff')
         render = ImageTk.PhotoImage(img)
         initil = Label(self, image=render)
         initil.image = render
