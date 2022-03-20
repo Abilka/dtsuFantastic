@@ -20,13 +20,15 @@ class AuthMethod:
 
 
 auth_method = [
+    AuthMethod('GosUslugi', [Input('Логин'), Input("Пароль", True)], methods.Check().gosuslugi),
     AuthMethod('Стандартная авторизация', [Input('Логин'), Input("Пароль", True)], methods.Check().standart),
     AuthMethod('Pincode', [Input('Код')], methods.Check().pin),
     AuthMethod('Google Auth', [Input('Код из приложения')], methods.Check().totp),
     AuthMethod('ВКонтакте', [Input('Логин'), Input("Пароль", True)], methods.Check().vk),
     AuthMethod('Apple ID', [Input('Логин'), Input("Пароль", True)], methods.Check().apple_id),
+    AuthMethod('GitHub', [Input('Логин'), Input("Пароль", True)], methods.Check().github),
+    AuthMethod('Pochta (Почта Росcии)', [Input('Логин'), Input("Пароль", True)], methods.Check().pochta),
 
-    # AuthMethod('GitHub', [Input('Логин'), Input('Пароль', True)]),
     # AuthMethod('Google', [Input('Логин'), Input('Пароль', True)]),
     # AuthMethod('Telegram', [Input('Номер')]),
 ]
