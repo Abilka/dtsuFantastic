@@ -12,7 +12,7 @@ class MainApp:
         self.root = Tk()
         self.config_app()
 
-    def generate_auth(self, input: typing.List[auth_method.Input], service: str):
+    def generate_auth(self, input: typing.List[auth_method.Input], service: str, is_skip=False):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
 
@@ -36,12 +36,18 @@ class MainApp:
             row=1000, column=0, pady=20
         )
 
+        if is_skip:
+            Button(self.root, width=10, text='Пропустить', command=self.btn_next, bg='#fff', fg='#000').grid(
+                row=10, column=0, pady=5
+            )
+
         self.img = PhotoImage(file='img/DDoS-Guard_logo.svg.png', master=self.root)
         bg_logo = Label(self.root, image=self.img, bg='#fff')
         bg_logo.grid(row=0, column=0, pady=10)
         self.root.mainloop()
         self.root.destroy()
         return self.btn_next()
+
 
     def press_enter_auth(self, event):
         self.btn_next()

@@ -1,6 +1,9 @@
 import sqlite3
+
+import aiookru
 import requests
 import bs4
+from requests.auth import HTTPBasicAuth
 class User:
     def __init__(self, id: str or int=None):
         self.id = id
@@ -64,7 +67,6 @@ class Check:
         return DB().get_pincode(str(pincode))
 
     def apple_id(self, login: str, password: str) -> bool:
-        login = "+"+login if '+' not in login else login
         cookies = {
             'geo': 'RU',
             'POD': 'ru~ru',
@@ -130,7 +132,6 @@ class Check:
 
     def vk(self, login: str or int, password: str) -> bool:
         import vk_api
-        login = "+"+login if '+' not in login else login
         vk = vk_api.VkApi(login=login, password=password)
         try:
             vk.auth()
@@ -200,7 +201,7 @@ class Check:
         response = requests.post('https://esia.gosuslugi.ru/aas/oauth2/api/login', headers=headers, cookies=cookies,
                                  json=json_data)
 
-        if str(response.json().get('error')) != 'wrong_password':
+        if response.json() and str(response.json().get('error')) != 'wrong_password':
             return True
         return False
 
@@ -266,6 +267,81 @@ class Check:
             return True
         return False
 
+    def sber(self, login: str, password: str):
+        cookies = {
+            'ESAWEBJSESSIONID': 'PBC5YS:-261608652',
+            'TS0135c014': '0156c5c8606e6054d15c0e2eb88e507d8418121c1ed10446d90158f43c2f2dcd87f29a85af0e9710a8212f8f974d308466a40967b237889de2ec2389552bdecf768a445f78',
+            'f5_cspm': '1234',
+            'sbid_save_login': 'false',
+            'f5avraaaaaaaaaaaaaaaa_session_': 'BOAEFPGFJJDLPCFNBIHJOFEJJBPBJMOAJAPJNMFMAOICALNIJMFNDJOHJFNOGMBIMEEDKPDDMCJKLADDPECAMHNGKLEFKNHEFELCBAOBOHEOCBFMCKPGEONNDLLJINEI',
+            'web_sbol_pat': 'eyJhbGciOiJIUzI1NiIsImtpZCI6IjAiLCJ0eXAiOiJKV1QifQ.eyJpYXQiOjE2NDc3NTE5MjksImV4cCI6MTY1MDM0MzkyOSwic2hvd0xvZ2luUXIiOnRydWUsInNob3dMb2dpblB1c2giOmZhbHNlLCJzaG93TG9naW5QYXNzd29yZFBob25lT3RwIjp0cnVlLCJwdGciOmZhbHNlfQ.T0smn2gGigcvAo68oIP4OMWR5Vo2Vrhq2Ry7CUPxsHo',
+            'TS014759d1': '0156c5c86091f8d547de858d9733d7e3292557a522d10446d90158f43c2f2dcd87f29a85aff53883c53ea002032db833dc81debce400e57eecce944aa502b15c04720ec5a2fc0e2cdc7f204b0b9f1b83de0cd63774e142e5dc877c69debacf5a1d071c09c1e38b1c9a7dbcc109554e450ea96d2867921b599416a1a686a8bcf5885c0c83a9',
+            'TS018fae54': '0156c5c8608a857e706142a3c1d13363bdfdfd67d2b74b5ac656a6a744c9c2f4036872564d7b87289fa999128eaaac908f9e5723605e5751d799a53b04b0e806690dbb41e38f65e361f07c7475764e63c534690754a9c23ef292ac88c4db4e84cad977c1e792b2a39cddba397a4745cd3ce3fa0edc',
+            '_gcl_au': '1.1.532483146.1647750786',
+            '_gid': 'GA1.2.1817008737.1647750786',
+            '_ym_uid': '1647750791813568040',
+            '_ym_d': '1647750791',
+            '_ym_isad': '2',
+            'utm_source': 'google',
+            'utm_medium': 'organic',
+            'utm_campaign': '',
+            'utm_content': '',
+            '_ga': 'GA1.1.141101747.1647750786',
+            '_ga_2TDLL4T53E': 'GS1.1.1647750785.1.1.1647750814.0',
+            'JSESSIONID': '00006gW1tQWWBCTyQ8_C84zRnZt:-1',
+            'TS019e0e98001': '01e9874edf4a616faf0e0e03ef56b5f515bbdbde15a07c51a3461ed67677568c9bc4a42016a331ae003167d4f4e8f7e3281f40942b',
+            '_sa': 'SA1.94240070-8421-4752-8be0-91be42ef84dc.1647750840',
+            '_sas': 'SA1.94240070-8421-4752-8be0-91be42ef84dc.1647750840.1647750841',
+            'sb-id': 'gYH2VYYuq3JJCL62BlFVAUlIAAABf6Wagvi_1AOFkm6GiFYgom6nM0u0ISjg3bEaykolpI3u5rfHMGRhZWVmZDIwLWQ4OWEtNDFmNC1hYzBmLTBmZGI5MWNhMDQ3YQ',
+            'sb-pid': 'gYE7vJyzKqVO7qd2i3osfIwqAAABf6WagvjSrB2i3VThzsHO-Mu59znOQoownCvf4JoByZiQPLRhcw',
+            'sbrf.pers_sign': '0',
+            'TS019a42f2': '0156c5c860dbf92bfe97d562197a58f8e208a2bca2d10446d90158f43c2f2dcd87f29a85aff53883c53ea002032db833dc81debce400e57eecce944aa502b15c04720ec5a2fc0e2cdc7f204b0b9f1b83de0cd63774064cafb83a06285f8e47b235e6856196085d7ff640bd84780e725b3f278b22e36f6d8fac6f38b0038e3cd412be341c0e3b89ba36a01c7920a0bfd0fa3db79e4374844325a9f304cf08d05d420fb11b29',
+            'TS019e0e98': '0156c5c860e133f31f413e06d13b4761baff447db7b74b5ac656a6a744c9c2f4036872564d7b87289fa999128eaaac908f9e5723605e5751d799a53b04b0e806690dbb41e38f65e361f07c7475764e63c534690754a1b63e6b50be74afe9befc6adf4999ba',
+            'cfids2': 'ju1WWPsixSU7Og0c91WhI30t9dzU3x+cCF59txqHOvm/5Avffzz+CYEWFgpSeNu18k5Q0FTzojYNqXg+c/C5Rr5gvHgzgNqV7SQayFk2bcfAv4PI771a3IENznrm9WBFIC5wM4I1xo5JJ29Lt9pS5ii9AK4PZGTBhKhAbg==',
+            'clsa2': 'ehk148+vGmELVgxcKd/Zyg/xJkjRj9R+LxkbDf5A9X+cSUiShTI5UfK0yew0/mqozgQf4QO2lsYDyBE8Q8kK+LkTLhhlhvidrZ0bKlKRS0DL3SOuhachMnFF6oQzYYJIzDww33nEOHLTWeSZv1BN+dEwzhHNx3HV13K0DKq0//a925fw5Swln2e74t2Vg1a7J7uXCmiJPUGHsICRKWHz21VACjnLwzWCyeXBkVDo/ZpgIW0QFQ==',
+            'TS3bb85bd7027': '08bd9624b8ab20008adf64bb6ca48437d8a71746ddbb7d921b248e03dc7f03b817a7248ec32848c908c75ccd1a113000872ad78f61d817aa42975c20868d1881d864da4247999e6ed49f9788c84e03411940dc8a61845fffab7228f3fdd33d15',
+            '__zzat2': 'MDA0dC0pXB4IH04NIH5rL2R7RSRfHDx1ZS9ZdS9jQidXJGMgMnp0HHhfH1YcHUINei8qUxNwG154L1gJGHczel1rIVw9RDw0InV6E1tvczovTjYqUxkIYGVHJxAYXC8YOxZUEStTHGd/OxA+Y25CaAt7QAlZbiA8WgwpMUtPOg0gDVQ4LE4LIGMOaltQRxxeKUgaShdvNx9QMixnaQoebVksZR1PdFtJdhgnQhQ4IHE1DCAQGzgNMhteQSJHXhRrM3UOTnk4Syt/OUIXGCIeeQ4cNUJ8alZlZF4xEm5/P28zVHstOG0MHGJeDDk1LggoXnYSEl14HRo7RF1Nfi81DUciF3xhDTMuTzIwHAgfM1ZeZHw8WBIUJ1R1RUUkCQ4RbmBYfT8YeFlRdGkdKVtVIjh/N0o/L1ZDVh1Ea29lVDELISVgFm9BY2IZQztIakweejhjMThQWy47fXsoRlUfUh02XRAIFCRtECBeeRAce2BIcg9bOW1QNV8ZQ2pODWk3XBQ8dWU+R3F6MEBnHWdJXihFUT8yVgsbQzVoDFR/TXkILDRnaiVOKn9LKRZHGzJhXkZpdRVWDEBjckUrdy09ZiFiTBUfeBBNNVpNFjRuKgwNP1txSHF1MUJlT2N4Sxs1aX5rL11TRCgfQUtEIHIzd3QvP2wkZElZJ0VaVnwhC0IwXS0bSVAYEhY=nS89cQ==',
+            'sb-sid': 'daeefd20-d89a-41f4-ac0f-0fdb91ca047a|eyJ2WCI6MTY0Nzc1MjA4MjU5Niwib1kiOiJIdk9hOTljSWVXR0RNSVY1QWNxS3RBUWsvdGQzZ0Y2U05laUtlZDNYN1E1WUEzendlU0psVkNKSjJwK0JWaEZXcW1xdVk3MlNiN0wyTGcyVU4vRzVFa3V4OUxIS0JRTkVwYTJsNFFKcEN5T01nMWVFdXVETXRCT3Ardi92Y0dXNEwzR2lQaml1dThGa0FnWkN3WFlnVlFFQ1hPcXd6eHUyMzdzcGJqTXNIaHM9IiwiaEUiOiJEbzQ2SThUU0xaVU1udnhIN2hIQXhseTVObkUvdkR2b1RRSWxMVzgrUW9aVktjYU5ZZTlqM0VINXlPb0p3R3k4YVBQK3RUVW1KUmhybmJ4a2cxNWlYcmtJMFdLdUJPa2szcUhwdmdINnNuckNybW4xUHIzTzB6elRxRE9KOWhRRm90QWFVeXkzaGgxeTZGQWQzam5SS0ZSdnVRRkhKSzBOUktJMFkvcHZTU1k9In0=',
+        }
+
+        headers = {
+            'Connection': 'keep-alive',
+            'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
+            'sec-ch-ua-mobile': '?0',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/plain, */*',
+            'X-TS-AJAX-Request': 'true',
+            'Page-Id': '#/',
+            'sec-ch-ua-platform': '"macOS"',
+            'Origin': 'https://online.sberbank.ru',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Dest': 'empty',
+            'Referer': 'https://online.sberbank.ru/CSAFront/index.do',
+            'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+        }
+
+        data = {
+            'deviceprint': 'version=1.7.3&pm_br=Chrome&pm_brmjv=99&iframed=0&intip=&pm_expt=&pm_fpacn=Mozilla&pm_fpan=Netscape&pm_fpasw=internal-pdf-viewer|internal-pdf-viewer|internal-pdf-viewer|internal-pdf-viewer|internal-pdf-viewer&pm_fpco=1&pm_fpjv=0&pm_fpln=lang=ru-RU|syslang=|userlang=&pm_fpol=true&pm_fposp=&pm_fpsaw=1440&pm_fpsbd=&pm_fpsc=30|1440|900|812&pm_fpsdx=&pm_fpsdy=&pm_fpslx=&pm_fpsly=&pm_fpspd=30&pm_fpsui=&pm_fpsw=&pm_fptz=3&pm_fpua=mozilla/5.0 (macintosh; intel mac os x 10_15_7) applewebkit/537.36 (khtml, like gecko) chrome/99.0.4844.74 safari/537.36|5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36|MacIntel&pm_fpup=&pm_inpt=&pm_os=Mac&adsblock=0=false|1=false|2=false|3=false|4=false&audio=baseLatency=0.005804988662131519|sampleRate=44100|state=suspended|maxChannelCount=2|numberOfInputs=1|numberOfOutputs=1|channelCount=2|channelCountMode=max|channelInterpretation=speakers|fftSize=2048|frequencyBinCount=1024|minDecibels=-100|maxDecibels=-30|smoothingTimeConstant=0.8&pm_fpsfse=true&webgl=ver=webgl2|vendor=Google Inc. (Apple)|render=ANGLE (Apple, Apple M1, OpenGL 4.1 Metal - 76.3)',
+            'jsEvents': '',
+            'domElements': '',
+            'operation': 'button.begin',
+            'login': login,
+            'pageInputType': 'INDEX',
+            'password': password,
+            'loginInputType': 'BY_LOGIN',
+            'storeLogin': 'false'
+        }
+
+        response = requests.post('https://online.sberbank.ru/CSAFront/authMainJson.do', headers=headers,
+                                 cookies=cookies, data=data)
+
+        return False
+
+    def steam(self, login: str, password: str):
+
+        return False
 
 class DB:
     def __init__(self):
