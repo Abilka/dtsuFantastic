@@ -12,8 +12,6 @@ class MainApp:
         self.root = Tk()
         self.config_app()
 
-
-
     def generate_auth(self, input: typing.List[auth_method.Input], service: str):
         self.entry_list: typing.List[tkinter.StringVar] = []
         count = len(input)
@@ -27,8 +25,10 @@ class MainApp:
         for i in range(count):
             self.entry_list.append(StringVar())
             Label(self.root, text=input[i].name, bg='#fff', fg='#000').grid(row=count + 1 + i, column=0, pady=3)
-            Entry(self.root, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None,
-                  bg='#fff', fg='#000').grid(row=count + 2 + i, column=0, padx=100)
+            entr = Entry(self.root, width=20, textvariable=self.entry_list[i], show='*' if input[i].is_hide else None,
+                  bg='#fff', fg='#000', takefocus=True)
+            entr.grid(row=count + 2 + i, column=0, padx=100)
+            entr.focus()
             count += 1
 
         next_btn = Button(self.root, width=10, text='Далее', command=self.root.quit, bg='#fff', fg='#000')
